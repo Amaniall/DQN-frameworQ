@@ -2,10 +2,14 @@ import torch.nn as nn
 import torch.optim as optim
 from torch import no_grad, as_tensor
 
+
+
+CONFIG = "platoon_simplified"
+
 # """CHANGE HYPER PARAMETERS HERE""" ###################################################################################
 HYPER_PARAMS = {
     'gpu': '0',                          # GPU #
-    'n_env': 4,                          # Multi-processing environments
+    'n_env': 1,                          # Multi-processing environments
     'lr': 1e-04,                         # Learning rate
     'gamma': 0.99,                       # Discount factor
     'eps_start': 1.,                     # Epsilon start
@@ -26,10 +30,11 @@ HYPER_PARAMS = {
     'repeat': 5,                         # Repeat action
     'max_episode_steps': 5000,           # Time limit episode steps
     'max_total_steps': 0,                # Max total training steps if > 0, else inf training
-    'algo': 'DuelingDoubleDQNAgent'      # DQNAgent
+    'algo': 'DuelingDoubleDQNAgent',      # DQNAgent
                                          # DoubleDQNAgent
                                          # DuelingDoubleDQNAgent
                                          # PerDuelingDoubleDQNAgent
+    'n_vehicles' : 4                                     
 }
 
 ########################################################################################################################

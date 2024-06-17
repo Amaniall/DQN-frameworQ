@@ -7,6 +7,7 @@ import numpy as np
 
 from torch import device, cuda
 
+CONFIG = "platoon_simplified"
 
 class Observe(View):
     def __init__(self, args):

@@ -7,4 +7,5 @@ else:
     from .view import CustomView as View
 
 
+#__all__ = ["Baselines", "PlatoonEnvSimp", "SUMO_PARAMS"]
 __all__ = ['HYPER_PARAMS', 'network_config', 'CustomEnv', 'View']
