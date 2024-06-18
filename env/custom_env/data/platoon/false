@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2024-06-17 11:52:37 by Eclipse SUMO sumo Version 1.18.0
+<!-- generated on 2024-06-17 15:02:33 by Eclipse SUMO sumo Version 1.18.0
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
-        <net-file value="C:/Users/ELITEBOOK/romain_code\DQN-frameworQ-3\env\custom_env\data\platoon\platoon.net.xml"/>
-        <additional-files value="C:/Users/ELITEBOOK/romain_code\DQN-frameworQ-3\env\custom_env\data\platoon\freeway.rou.xml,C:/Users/ELITEBOOK/romain_code\DQN-frameworQ-3\env\custom_env\data\platoon\detectors.add.xml,C:/Users/ELITEBOOK/romain_code\DQN-frameworQ-3\env\custom_env\data\platoon\freeway.flow.xml"/>
+        <net-file value="C:/Users/ELITEBOOK/linghui_code_refined\PlatooningRL_GRETTIA\env\custom_env\data\platoon\platoon.net.xml"/>
+        <additional-files value="C:/Users/ELITEBOOK/linghui_code_refined\PlatooningRL_GRETTIA\env\custom_env\data\platoon\freeway.rou.xml,C:/Users/ELITEBOOK/linghui_code_refined\PlatooningRL_GRETTIA\env\custom_env\data\platoon\detectors.add.xml,C:/Users/ELITEBOOK/linghui_code_refined\PlatooningRL_GRETTIA\env\custom_env\data\platoon\freeway.flow.xml"/>
     </input>
 
     <time>
@@ -20,7 +20,7 @@
     </processing>
 
     <traci_server>
-        <remote-port value="53005"/>
+        <remote-port value="60228"/>
     </traci_server>
 
     <gui_only>

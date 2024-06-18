@@ -13,10 +13,9 @@ class CustomEnvWrapper(gym.Env):
         super(CustomEnvWrapper, self).__init__()
 
         self.custom_env = custom_env
-        
 
-        #self.mode = self.custom_env.mode
-        #self.player = self.custom_env.player
+        self.mode = self.custom_env.mode
+        self.player = self.custom_env.player
 
         self.steps = 0
         self.total_reward = 0.
@@ -70,16 +69,16 @@ class CustomEnvWrapper(gym.Env):
 
         self.custom_env.reset()
 
-        #if not self.mode["train"]:
-            #self.reset_render()
+        if not self.mode["train"]:
+            self.reset_render()
 
         return self._obs()
 
     def step(self, action):
         self.custom_env.step(action)
 
-        #if not self.mode["train"]:
-            #self.step_render()
+        if not self.mode["train"]:
+            self.step_render()
 
         self.steps += 1
 

@@ -15,7 +15,7 @@ import xml.etree.ElementTree as ET
 # https://github.com/michele-segata/plexe-pyapi
 from plexe import Plexe, ACC, CACC, DRIVER, FAKED_CACC, SPEED, POS_X, POS_Y
 
-SUMO_HOME = "/usr/share/sumo/"
+SUMO_HOME = "C:/Users/ELITEBOOK\AppData\Roaming\Microsoft\Windows/Start Menu\Programs\SUMO"
 
 sys.path.append(SUMO_HOME + 'tools')
 

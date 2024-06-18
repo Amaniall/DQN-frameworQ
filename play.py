@@ -8,7 +8,7 @@ class Play(View):
     def __init__(self, args):
         super(Play, self).__init__(type(self).__name__.upper(),
                                    make_env(
-                                       env=CustomEnvWrapper(CustomEnv()),
+                                       env=CustomEnvWrapper(CustomEnv(type(self).__name__.lower(), p=args.player)),
                                        max_episode_steps=args.max_s)
                                    )
 
@@ -52,6 +52,6 @@ if __name__ == "__main__":
     parser.add_argument('-log', type=str2bool, default=False, help='Log csv to ./logs/test/')
     parser.add_argument('-log_s', type=int, default=0, help='Log step if > 0, else episode')
     parser.add_argument('-log_dir', type=str, default="./logs/test/", help='Log directory')
-    parser.add_argument('-player', type=str, default='play', help='Player')
+    parser.add_argument('-player', type=str, default='player', help='Player')
 
     Play(parser.parse_args()).run()

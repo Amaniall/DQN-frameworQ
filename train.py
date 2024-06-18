@@ -1,14 +1,3 @@
-SUMO_HOME = "/usr/share/sumo/"
-import sys
-sys.path.append(SUMO_HOME + 'tools')
-
-try:
-    sys.path.append("/usr/share/sumo/tools")
-    from sumolib import checkBinary
-except ImportError:
-    sys.exit("please declare environment variable 'SUMO_HOME' as the root directory of your sumo installation (it should contain folders 'bin', 'tools' and 'docs')")
-
-
 from env import HYPER_PARAMS, network_config, CustomEnv
 from dqn import CustomEnvWrapper, make_env, Agents
 
@@ -154,18 +143,5 @@ if __name__ == "__main__":
                              'DuelingDoubleDQNAgent ' +
                              'PerDuelingDoubleDQNAgent'
                         )
-    parser.add_argument('-n_vehicles', type=int, default=10, help='Number of vehicles in the environment')
-    
-   
-    """env = CustomEnv()  # No need to pass n_vehicles, change later for flexible vehicles mn3rf
-    env = CustomEnv()  # Initialize without arguments
-    obs = env.reset()
-    print("Initial Observation:", obs)
-    action = [1] * 10  # Example action: all vehicles accelerate
-    obs, reward, done, _ = env.step(action)
-    print("Next Observation:", obs, "Reward:", reward, "Done:", done)"""
-    
-    
-    
-   
+
     Train(parser.parse_args()).run()
