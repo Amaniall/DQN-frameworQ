@@ -1,5 +1,19 @@
+
+
+# Import necessary components from SUMO
+from sumolib import checkBinary
+
+
+
+from torch.utils.tensorboard import SummaryWriter
+
+import traci
+import sumolib
+import os
+import sys
 from env import HYPER_PARAMS, network_config, CustomEnv
 from dqn import CustomEnvWrapper, make_env, Agents
+from torch.utils.tensorboard import SummaryWriter
 
 import os
 import time
@@ -8,11 +22,22 @@ import itertools
 from datetime import timedelta
 
 
+
+
+"""def debug_vehicle_ids(self):
+    # Log the list of vehicle IDs at each simulation step
+    vehicle_ids = traci.vehicle.getIDList()
+    vehicle_states = {vehicle_id: (traci.vehicle.getPosition(vehicle_id), traci.vehicle.getSpeed(vehicle_id)) for vehicle_id in vehicle_ids}
+    logging.info(f"Current vehicle IDs: {vehicle_ids}")
+    logging.info(f"Vehicle states: {vehicle_states}")
+    print(f"Current vehicle IDs: {vehicle_ids}")
+    print(f"Vehicle states: {vehicle_states}")"""
+
 class Train:
     def __init__(self, args):
         os.environ['CUDA_DEVICE_ORDER'] = 'PCI_BUS_ID'
         os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
-
+         
         self.env = make_env(
             env=CustomEnvWrapper(CustomEnv(type(self).__name__.lower())),
             repeat=args.repeat,
@@ -58,6 +83,7 @@ class Train:
         [print(arg, "=", getattr(args, arg)) for arg in vars(args)]
 
         self.max_total_steps = args.max_total_steps
+        self.writer = SummaryWriter(log_dir=args.log_dir)
 
     def init_replay_memory_buffer(self):
         print()
@@ -105,11 +131,16 @@ class Train:
 
             if bool(self.max_total_steps) and (step * self.agent.n_env) >= self.max_total_steps:
                 exit()
+                print("hey amani")
+                self.agent.save_model()
+
+
 
     def run(self):
         self.init_replay_memory_buffer()
 
         self.train_loop()
+        self.writer.close()
 
 
 if __name__ == "__main__":
@@ -145,3 +176,29 @@ if __name__ == "__main__":
                         )
 
     Train(parser.parse_args()).run()
+    writer = SummaryWriter(log_dir='./logs/train/DuelingDoubleDQNAgent_lr0.0001')
+    for episode in range(num_episodes):
+     state = env.reset()
+    total_reward = 0
+    for t in range(max_timesteps):
+        action = agent.select_action(state)
+        next_state, reward, done, _ = env.step(action)
+        agent.store_transition(state, action, reward, next_state, done)
+        agent.optimize_model()
+        
+        total_reward += reward
+        state = next_state
+        
+        if done:
+            break
+
+    # Log metrics to TensorBoard
+    writer.add_scalar('Reward/Episode', total_reward, episode)
+    writer.add_scalar('Loss/Episode', agent.loss, episode)
+    
+    # Save model checkpoint
+    if episode % save_interval == 0:
+        agent.save_model('checkpoint.pth')
+
+    # Close the writer
+    writer.close()

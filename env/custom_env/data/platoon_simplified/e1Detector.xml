@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on Wed Jan 18 17:30:39 2023 by Eclipse SUMO Version 1.4.0
+<!-- generated on 2024-06-21 10:40:46 by Eclipse SUMO GUI Version 1.18.0
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
-        <net-file value="./env/custom_env/data/platoon_simplified/platoon_simplified.net.xml"/>
-        <additional-files value="./env/custom_env/data/platoon_simplified/freeway.rou.xml,./env/custom_env/data/platoon_simplified/detectors.add.xml,./env/custom_env/data/platoon_simplified/freeway.flow.xml"/>
+        <net-file value="C:\Users\ELITEBOOK\thuan_code\PlatooningRL_GRETTIA\env\custom_env\data\platoon_simplified\platoon_simplified.net.xml"/>
+        <additional-files value="C:\Users\ELITEBOOK\thuan_code\PlatooningRL_GRETTIA\env\custom_env\data\platoon_simplified\freeway.rou.xml,C:\Users\ELITEBOOK\thuan_code\PlatooningRL_GRETTIA\env\custom_env\data\platoon_simplified\detectors.add.xml,C:\Users\ELITEBOOK\thuan_code\PlatooningRL_GRETTIA\env\custom_env\data\platoon_simplified\freeway.flow.xml"/>
     </input>
-
-    <output>
-        <tripinfo-output value="./env/custom_env/data/platoon_simplified/tripinfo.xml"/>
-    </output>
 
     <time>
         <begin value="0"/>
@@ -20,22 +16,17 @@
 
     <processing>
         <collision.action value="remove"/>
-        <collision.stoptime value="0.1"/>
-        <waiting-time-memory value="1800"/>
-        <lanechange.duration value="0"/>
+        <collision.stoptime value="0.11"/>
     </processing>
-
-    <report>
-        <no-step-log value="true"/>
-    </report>
-
-    <traci_server>
-        <remote-port value="41305"/>
-    </traci_server>
 
     <gui_only>
         <start value="true"/>
-        <tracker-interval value="0.1"/>
     </gui_only>
 
 </configuration>
+-->
+
+<detector xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/det_e1_file.xsd">
+    <interval begin="0.00" end="1800.00" id="D1" nVehContrib="520" flow="1040.00" occupancy="4.27" speed="27.10" harmonicMeanSpeed="27.05" length="4.00" nVehEntered="520"/>
+    <interval begin="0.00" end="1800.00" id="D2" nVehContrib="737" flow="1474.00" occupancy="8.01" speed="20.55" harmonicMeanSpeed="20.46" length="4.00" nVehEntered="738"/>
+</detector>

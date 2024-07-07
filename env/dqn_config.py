@@ -1,36 +1,43 @@
+
+from .custom_env.utils import SUMO_PARAMS
+
 import torch.nn as nn
 import torch.optim as optim
 from torch import no_grad, as_tensor
 
+CONFIG = "platoon"
+
 # """CHANGE HYPER PARAMETERS HERE""" ###################################################################################
 HYPER_PARAMS = {
-    'gpu': '0',                          # GPU #
-    'n_env': 4,                          # Multi-processing environments
-    'lr': 1e-04,                         # Learning rate
-    'gamma': 0.99,                       # Discount factor
-    'eps_start': 1.,                     # Epsilon start
-    'eps_min': 0.01,                     # Epsilon min
-    'eps_dec': 5e6,                      # Epsilon decay
-    'eps_dec_exp': True,                 # Epsilon exponential decay
-    'bs': 32,                            # Batch size
-    'min_mem': 1000000,                  # Replay memory buffer min size
-    'max_mem': 1000000,                  # Replay memory buffer max size
-    'target_update_freq': 30000,         # Target network update frequency
-    'target_soft_update': True,          # Target network soft update
-    'target_soft_update_tau': 1e-03,     # Target network soft update tau rate
-    'save_freq': 10000,                  # Save frequency
-    'log_freq': 1000,                    # Log frequency
-    'save_dir': './save/',               # Save directory
-    'log_dir': './logs/train/',          # Log directory
-    'load': True,                        # Load model
-    'repeat': 5,                         # Repeat action
-    'max_episode_steps': 5000,           # Time limit episode steps
-    'max_total_steps': 0,                # Max total training steps if > 0, else inf training
-    'algo': 'DuelingDoubleDQNAgent'      # DQNAgent
-                                         # DoubleDQNAgent
-                                         # DuelingDoubleDQNAgent
-                                         # PerDuelingDoubleDQNAgent
+    'gpu': '0',                                 # GPU #
+    'n_env': 1,                                 # Multi-processing environments
+    'lr': 2e-04,                                # Learning rate
+    'gamma': 0.9,                              # Discount factor
+    'eps_start': 1,                            # Epsilon start
+    'eps_min': 0.01,                            # Epsilon min
+    'eps_dec': 3e6,                             # Epsilon decay
+    'eps_dec_exp': True,                        # Epsilon exponential decay
+    'bs': 32,                                   # Batch size
+    'min_mem': 5000,                          # Replay memory buffer min size
+    'max_mem': 50000,                         # Replay memory buffer max size
+    'target_update_freq': 5000,                # Target network update frequency
+    'target_soft_update': True,                 # Target network soft update
+    'target_soft_update_tau': 1e-03,            # Target network soft update tau rate
+    'save_freq': 1000,                         # Save frequency
+    'log_freq': 5000,                           # Log frequency
+    'save_dir': './save/' + CONFIG + "/",       # Save directory
+    'log_dir': './logs/train/' + CONFIG + "/",  # Log directory
+    'load': False,                               # Load model
+    'repeat': 0,                                # Repeat action
+    'max_episode_steps': 1000,                  # Time limit episode steps
+    'max_total_steps': 0,                       # Max total training steps if > 0, else inf training
+    'algo': 'PerDuelingDoubleDQNAgent'          # DQNAgent
+                                                # DoubleDQNAgent
+                                                # DuelingDoubleDQNAgent
+                                                # PerDuelingDoubleDQNAgent
 }
+
+
 
 ########################################################################################################################
 

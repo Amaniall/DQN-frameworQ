@@ -85,10 +85,10 @@ class CustomEnvWrapper(gym.Env):
         return self._obs(), self._rew(), self._done(), self._info()
 
     def reset_render(self):
-        self.custom_env.reset_render()
+        self.custom_env.reset()
 
     def step_render(self):
-        self.custom_env.step_render()
+        self.custom_env.step()
 
     def render(self, mode='human'):
         pass

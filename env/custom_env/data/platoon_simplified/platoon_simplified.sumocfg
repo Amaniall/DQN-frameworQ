@@ -1,9 +1,9 @@
-<?xml  version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="iso-8859-1"?>
 
-<sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.sf.net/xsd/sumoConfiguration.xsd">
 
     <input>
-        <net-file value="platoon.net.xml"/>
+        <net-file value="platoon_simplified.net.xml"/>
         <additional-files value="freeway.rou.xml,detectors.add.xml,freeway.flow.xml"/>
     </input>
 
@@ -22,4 +22,4 @@
         <start value="true"/>
     </gui_only>
 
-</sumoConfiguration>
+</configuration>

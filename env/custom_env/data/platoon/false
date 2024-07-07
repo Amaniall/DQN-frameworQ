@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2024-06-17 15:02:33 by Eclipse SUMO sumo Version 1.18.0
+<!-- generated on 2024-07-07 20:48:26 by Eclipse SUMO sumo Version 1.18.0
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
-        <net-file value="C:/Users/ELITEBOOK/linghui_code_refined\PlatooningRL_GRETTIA\env\custom_env\data\platoon\platoon.net.xml"/>
-        <additional-files value="C:/Users/ELITEBOOK/linghui_code_refined\PlatooningRL_GRETTIA\env\custom_env\data\platoon\freeway.rou.xml,C:/Users/ELITEBOOK/linghui_code_refined\PlatooningRL_GRETTIA\env\custom_env\data\platoon\detectors.add.xml,C:/Users/ELITEBOOK/linghui_code_refined\PlatooningRL_GRETTIA\env\custom_env\data\platoon\freeway.flow.xml"/>
+        <net-file value="./env/custom_env/data/platoon/platoon.net.xml"/>
+        <additional-files value="./env/custom_env/data/platoon/freeway.rou.xml,./env/custom_env/data/platoon/detectors.add.xml,./env/custom_env/data/platoon/freeway.flow.xml"/>
     </input>
+
+    <output>
+        <tripinfo-output value="./env/custom_env/data/platoon/tripinfo.xml"/>
+    </output>
 
     <time>
         <begin value="0"/>
@@ -16,11 +20,17 @@
 
     <processing>
         <collision.action value="remove"/>
-        <collision.stoptime value="0.11"/>
+        <collision.stoptime value="0.2"/>
+        <waiting-time-memory value="1800"/>
+        <lanechange.duration value="0"/>
     </processing>
 
+    <report>
+        <no-step-log value="true"/>
+    </report>
+
     <traci_server>
-        <remote-port value="60228"/>
+        <remote-port value="65089"/>
     </traci_server>
 
     <gui_only>
