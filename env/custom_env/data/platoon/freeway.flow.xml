@@ -1,6 +1,6 @@
 <additional>
-	<flow begin="0" departLane="random" departPos="last" departSpeed="max" end="600" id="m0" route="m" type="vmix" vehsPerHour="4124" />
-	<flow begin="600" departLane="random" departPos="last" departSpeed="max" end="1200" id="m1" route="m" type="vmix" vehsPerHour="4186" />
-	<flow begin="1200" departLane="random" departPos="last" departSpeed="max" end="1800" id="m2" route="m" type="vmix" vehsPerHour="2219" />
-	<flow begin="0" departLane="2" departPos="last" departSpeed="max" end="1800" id="p_m" route="m" type="cav2" vehsPerHour="1827" />
+	<flow id="m0" begin="0" end="600" departPos="last" departSpeed="max" departLane="random" vehsPerHour="2017" type="vmix" route="m" />
+	<flow id="m1" begin="600" end="1200" departPos="last" departSpeed="max" departLane="random" vehsPerHour="2309" type="vmix" route="m" />
+	<flow id="m2" begin="1200" end="1800" departPos="last" departSpeed="max" departLane="random" vehsPerHour="3296" type="vmix" route="m" />
+	<flow id="p_m" begin="0" end="1800" departPos="last" departSpeed="max" departLane="2" vehsPerHour="1635" type="cav2" route="m" />
 </additional>

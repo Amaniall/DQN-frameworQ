@@ -332,7 +332,7 @@ class DqnEnv:
                     self.n_failure += 1
                 elif r == -10:
                     self.n_danger += 1
-                elif r == -100000:
+                elif r == -100:
                     self.n_collison += 1
                     with open("record_collision.txt", "a") as f:
                         list_print = self.o0 + self.o + list(self.collision) + [self.join_list[0], self.join_list[1],
@@ -353,6 +353,7 @@ class DqnEnv:
                 print('new joiner : ' + self.join_list[1])
             print('reward=',r)
             print('observation', self.obs())
+        return r, d
             
             
     """def step(self, action):
@@ -483,31 +484,32 @@ class DqnEnv:
         joiner_id = self.join_list[1]
         platoon_front_id = self.join_list[2]
         do = self.done()
-
+        rew = 0
         if joiner_id in self.tlp_list or joiner_id not in traci.vehicle.getIDList():
             rew = -100
+            self.reset()
         else:
             if do == 1:
                 leader = traci.vehicle.getLeader(joiner_id)
                 # Check if the joiner is behind the platoon front vehicle or at the head of the platoon
                 if (leader and leader[0] == platoon_front_id) or (joiner_id == self.join_list[0]):
                     rew = 10
-                    print("reward is now 10 :")
+                    print("succesful join ! ")
                     d = self.get_distance(joiner_id, platoon_front_id)
                     if d < 5:
                         rew = -10
-                        print("reward is minus 10")
-                    if d > 20:
+                        print("distance to front vehicle is less than 5")
+                    elif d > 20:
                         rew = rew * 20 / d
-                        print("d is greater than 20")
+                        print("distance to front vehicle is greater than 20")
                     with open("d.txt", "a") as f:
                         f.write(str(d) + '\n')
                 else:
                     rew = -1
-                    print("reward is minus one")
+                    print("unsuccesful join!")
             else:
-                rew = -1
-                print("reward is minus one")
+                #rew = -1
+                #print("reward is minus one")
                 v = traci.vehicle.getSpeed(joiner_id)
                 o = self.obs()
                 if o[7] < MIM_GAP or o[8] < MIM_GAP:  # Too small space with preceding/following veh
@@ -518,9 +520,8 @@ class DqnEnv:
                 if v < 15:
                     rew -= 5
                     print("minus 5 to reward")
-    
-        print("reward is served madam : ", rew)
         return rew
+        print("reward is served madam : ", rew)
 
 
 

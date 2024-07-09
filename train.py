@@ -176,29 +176,4 @@ if __name__ == "__main__":
                         )
 
     Train(parser.parse_args()).run()
-    writer = SummaryWriter(log_dir='./logs/train/DuelingDoubleDQNAgent_lr0.0001')
-    for episode in range(num_episodes):
-     state = env.reset()
-    total_reward = 0
-    for t in range(max_timesteps):
-        action = agent.select_action(state)
-        next_state, reward, done, _ = env.step(action)
-        agent.store_transition(state, action, reward, next_state, done)
-        agent.optimize_model()
-        
-        total_reward += reward
-        state = next_state
-        
-        if done:
-            break
-
-    # Log metrics to TensorBoard
-    writer.add_scalar('Reward/Episode', total_reward, episode)
-    writer.add_scalar('Loss/Episode', agent.loss, episode)
     
-    # Save model checkpoint
-    if episode % save_interval == 0:
-        agent.save_model('checkpoint.pth')
-
-    # Close the writer
-    writer.close()
