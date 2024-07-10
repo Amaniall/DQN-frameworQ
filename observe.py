@@ -7,6 +7,7 @@ import numpy as np
 
 from torch import device, cuda
 
+CONFIG = "platoon_simplified"
 
 class Observe(View):
     def __init__(self, args):
@@ -60,6 +61,7 @@ class Observe(View):
         self.repeat += 1
 
         self.obs, _, done, info = self.env.step(self.action)
+        # print(self.obs, self.action, done)
         self.env.log_info_writer(info, done, *self.log)
 
         if done:
@@ -79,7 +81,7 @@ class Observe(View):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="OBSERVE")
     str2bool = (lambda v: v.lower() in ("yes", "y", "true", "t", "1"))
-    parser.add_argument('-d', type=str, default='', help='Directory', required=True)
+    parser.add_argument('-d', type=str, default='./save/' + CONFIG + "/PerDuelingDoubleDQNAgent_lr0.0002_model.pack", help='Directory')
     parser.add_argument('-gpu', type=str, default='0', help='GPU #')
     parser.add_argument('-max_s', type=int, default=0, help='Max steps per episode if > 0, else inf')
     parser.add_argument('-max_e', type=int, default=0, help='Max episodes if > 0, else inf')

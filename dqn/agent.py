@@ -37,6 +37,7 @@ class Agent(metaclass=ABCMeta):
         self.save_frequency = save_frequency
         self.log_frequency = log_frequency
         self.load = load
+        self.info_loss = 0
 
         self.step = 0
         self.resume_step = 0
@@ -79,7 +80,7 @@ class Agent(metaclass=ABCMeta):
     def store_transitions(self, obses, actions, rews, dones, new_obses, infos):
         for i in self.replay_memory_buffer.store_transitions(obses, actions, rews, dones, new_obses):
             if infos:
-                self.ep_info_buffer.append({'r': infos[i]['r'], 'l': infos[i]['l']})
+                self.ep_info_buffer.append({'r': infos[i]['r'], 'l': self.info_loss})
                 self.episode_count += 1
 
     def epsilon(self):
@@ -114,7 +115,7 @@ class Agent(metaclass=ABCMeta):
             print("Resume training from " + self.save_path + "...")
             self.resume_step, self.episode_count, rew_mean, len_mean = self.online_network.load(self.save_path)
             [self.ep_info_buffer.append({'r': rew_mean, 'l': len_mean}) for _ in range(np.min([self.episode_count, self.ep_info_buffer.maxlen]))]
-            print("Step: ", self.resume_step * self.n_env, ", Episodes: ", self.episode_count, ", Avg Rew: ", rew_mean, ", Avg Ep Len: ", len_mean)
+            print("Step: ", self.resume_step * self.n_env, ", Episodes: ", self.episode_count, ", Avg Rew: ", rew_mean, ", Avg Loss: ", len_mean)
 
             self.update_target_network(force=True)
             self.step = self.resume_step
@@ -133,12 +134,12 @@ class Agent(metaclass=ABCMeta):
             print()
             print('Step: ', self.step * self.n_env, ' (' + str(self.step) + 'x' + str(self.n_env) + ')')
             print('Avg Rew: ', rew_mean)
-            print('Avg Ep Len: ', len_mean)
+            print('Avg Ep Loss: ', len_mean)
             print('Episodes: ', self.episode_count)
             print('---', str(timedelta(seconds=round((time.time() - self.start_time), 0))), '---')
 
             self.summary_writer.add_scalar('AvgRew', rew_mean, global_step=(self.step * self.n_env))
-            self.summary_writer.add_scalar('AvgEpLen', len_mean, global_step=(self.step * self.n_env))
+            self.summary_writer.add_scalar('AvgEpLoss', len_mean, global_step=(self.step * self.n_env))
             self.summary_writer.add_scalar('Episodes', self.episode_count, global_step=(self.step * self.n_env))
 
     def info_mean(self, i):
@@ -218,7 +219,7 @@ class DoubleAgent(Agent):
         action_q_values = T.gather(input=online_q_values, dim=1, index=actions_t)
 
         loss = self.online_network.loss(action_q_values, targets).to(self.device)
-
+        self.info_loss = loss.item()
         # Gradient descent
         self.online_network.optimizer.zero_grad()
         loss.backward()
@@ -264,6 +265,9 @@ class PerDoubleAgent(Agent):
             self.replay_memory_buffer.update_batch_priorities(tree_indices, abs_td_errors_np)
 
         loss = T.mean(is_weights_t * self.online_network.loss(action_q_values, targets)).to(self.device)
+        with open("loss.txt", "a") as f:
+            # Writing data to a file
+            f.write(str(loss) + '\n')
 
         # Gradient descent
         self.online_network.optimizer.zero_grad()

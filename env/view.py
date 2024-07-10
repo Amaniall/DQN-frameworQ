@@ -1,12 +1,12 @@
 # """CHANGE IS PYGLET VIEW HERE""" #####################################################################################
-PYGLET = False
+PYGLET = True
 ########################################################################################################################
 
 # """CHANGE PYGLET VIEW HERE""" ########################################################################################
 
 if PYGLET:
     # """CHANGE CUSTOM ENV UTILS IMPORT HERE""" ########################################################################
-    from .custom_env import RES
+    from .custom_env.utils import RES
     ####################################################################################################################
 
     from pyglet.gl import *
@@ -158,6 +158,7 @@ class CustomView:
         raise NotImplementedError
 
     def run(self):
+        self.setup()
         while True:
             self.clear()
             self.loop()

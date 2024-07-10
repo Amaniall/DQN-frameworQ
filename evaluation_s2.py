@@ -5,7 +5,6 @@ import os
 import argparse
 import numpy as np
 import pickle
-import random
 import matplotlib.pyplot as plt
 
 from torch import device, cuda
@@ -73,26 +72,21 @@ class Observe(View):
         # print(self.obs, self.action, done)
         self.env.log_info_writer(info, done, *self.log)
         if self.env.custom_env.sumo_env.s_step >= 17000:
-            veh, cav, platoon, processus, danger_try, faillure, collison, processus_lance, platoon_edges, n_wrong = self.env.custom_env.sumo_env.n_veh_simulation, \
+            veh, cav, platoon, processus, danger_try, faillure, collison, processus_lance = self.env.custom_env.sumo_env.n_veh_simulation, \
                                            self.env.custom_env.sumo_env.n_cav_simulation, \
                                            self.env.custom_env.sumo_env.n_platoon_simulation, \
                                            self.env.custom_env.sumo_env.n_processus_simulation,\
                                            self.env.custom_env.sumo_env.danger_try_simulation,\
                                            self.env.custom_env.sumo_env.n_faillure_simulation,\
                                            self.env.custom_env.sumo_env.n_collison_simulation, \
-                                           self.env.custom_env.sumo_env.n_processus_summary, \
-                                           self.env.custom_env.sumo_env.platoons_edge, \
-                                           self.env.custom_env.sumo_env.n_wrong_request
-            key = str(self.env.custom_env.sumo_env.m_flow[0]) + '_' + str(self.env.custom_env.sumo_env.p_flow) + '_' + str(self.env.custom_env.sumo_env.cav_p_rate)
-            if key in self.evaluation.keys():
-                self.evaluation[key].append([veh, cav, platoon, processus, danger_try, faillure, collison, processus_lance,
-                                        platoon_edges, n_wrong])
-            else:
-                self.evaluation[key] = [veh, cav, platoon, processus, danger_try, faillure, collison, processus_lance, platoon_edges, n_wrong]
-            if len(self.evaluation) < 96:
-                self.setup()
+                                           self.env.custom_env.sumo_env.n_processus_summary
+
+            self.evaluation[str(self.env.custom_env.sumo_env.m_flow[0]) + '_' + str(self.env.custom_env.sumo_env.p_flow)] = [veh, cav, platoon, processus, danger_try, faillure, collison, processus_lance]
             with open('evaluation.pkl', 'wb') as f:
                 pickle.dump(self.evaluation, f)
+            self.setup()
+
+
 
 
 
@@ -106,6 +100,5 @@ if __name__ == "__main__":
     parser.add_argument('-log', type=str2bool, default=False, help='Log csv to ./logs/test/')
     parser.add_argument('-log_s', type=int, default=0, help='Log step if > 0, else episode')
     parser.add_argument('-log_dir', type=str, default="./logs/test/", help='Log directory')
-    random.seed(42)
 
     Observe(parser.parse_args()).run()

@@ -81,6 +81,9 @@ class ReplayMemoryPrioritized(ReplayMemory):
 
             tree_index, priority, transition = self.replay_buffer.get_leaf(v)
 
+            while transition == 0:
+                tree_index, priority, transition = self.replay_buffer.get_leaf(v)
+
             prob_i = priority / self.replay_buffer.total_priority
 
             is_weight_i = pow(self.replay_buffer.size * prob_i, -beta) / max_is_weight

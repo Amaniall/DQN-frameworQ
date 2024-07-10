@@ -11,7 +11,7 @@ import random
 import numpy as np
 from itertools import permutations
 
-SUMO_HOME = "/home/lil/venv/sumo/"
+SUMO_HOME = "C:/Program Files (x86)/Eclipse/Sumo/"
 
 sys.path.append(SUMO_HOME + 'tools')
 

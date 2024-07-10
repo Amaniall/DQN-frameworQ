@@ -1,19 +1,17 @@
-
-
-# Import necessary components from SUMO
-from sumolib import checkBinary
-
-
-
-from torch.utils.tensorboard import SummaryWriter
-
-import traci
-import sumolib
-import os
+SUMO_HOME = "C:/Program Files (x86)/Eclipse/Sumo/"
 import sys
+sys.path.append(SUMO_HOME + 'tools')
+
+try:
+    sys.path.append("/usr/share/sumo/tools")
+    from sumolib import checkBinary
+except ImportError:
+    sys.exit("please declare environment variable 'SUMO_HOME' as the root directory of your sumo installation (it should contain folders 'bin', 'tools' and 'docs')")
+
+
+
 from env import HYPER_PARAMS, network_config, CustomEnv
 from dqn import CustomEnvWrapper, make_env, Agents
-from torch.utils.tensorboard import SummaryWriter
 
 import os
 import time
@@ -22,22 +20,11 @@ import itertools
 from datetime import timedelta
 
 
-
-
-"""def debug_vehicle_ids(self):
-    # Log the list of vehicle IDs at each simulation step
-    vehicle_ids = traci.vehicle.getIDList()
-    vehicle_states = {vehicle_id: (traci.vehicle.getPosition(vehicle_id), traci.vehicle.getSpeed(vehicle_id)) for vehicle_id in vehicle_ids}
-    logging.info(f"Current vehicle IDs: {vehicle_ids}")
-    logging.info(f"Vehicle states: {vehicle_states}")
-    print(f"Current vehicle IDs: {vehicle_ids}")
-    print(f"Vehicle states: {vehicle_states}")"""
-
 class Train:
     def __init__(self, args):
         os.environ['CUDA_DEVICE_ORDER'] = 'PCI_BUS_ID'
         os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
-         
+
         self.env = make_env(
             env=CustomEnvWrapper(CustomEnv(type(self).__name__.lower())),
             repeat=args.repeat,
@@ -83,7 +70,6 @@ class Train:
         [print(arg, "=", getattr(args, arg)) for arg in vars(args)]
 
         self.max_total_steps = args.max_total_steps
-        self.writer = SummaryWriter(log_dir=args.log_dir)
 
     def init_replay_memory_buffer(self):
         print()
@@ -97,12 +83,18 @@ class Train:
                 actions = [self.env.action_space.sample() for _ in range(self.agent.n_env)]
 
             new_obses, rews, dones, _ = self.env.step(actions)
-            self.agent.store_transitions(obses, actions, rews, dones, new_obses, None)
-
+            if dones[0]:
+                self.agent.store_transitions(obses, actions, rews, dones, self.env.o_p.reshape(new_obses.shape), None)
+                print(obses, actions, dones, self.env.o_p.reshape(new_obses.shape))
+            else:
+                self.agent.store_transitions(obses, actions, rews, dones, new_obses, None)
+                print(obses, actions, dones, new_obses)
             obses = new_obses
 
-            if (t+1) % (10000 // self.agent.n_env) == 0:
-                print(str((t+1) * self.agent.n_env) + ' / ' + str(self.agent.min_buffer_size))
+
+
+            if (t + 1) % (10000 // self.agent.n_env) == 0:
+                print(str((t + 1) * self.agent.n_env) + ' / ' + str(self.agent.min_buffer_size))
                 print('---', str(timedelta(seconds=round((time.time() - self.agent.start_time), 0))), '---')
 
     def train_loop(self):
@@ -117,8 +109,20 @@ class Train:
 
             new_obses, rews, dones, infos = self.env.step(actions)
 
-            self.agent.store_transitions(obses, actions, rews, dones, new_obses, infos)
+            if dones[0]:
+                self.agent.store_transitions(obses, actions, rews, dones, self.env.o_p.reshape(new_obses.shape), None)
+                self.agent.store_transitions(obses, actions, rews, dones, self.env.o_p.reshape(new_obses.shape), None)
+            else:
+                self.agent.store_transitions(obses, actions, rews, dones, new_obses, None)
 
+            '''if obses[0][-7] < 20 and obses[0][-6] > -20 and obses[0][-4] > 50:
+                with open("record_action1.txt", "a") as f:
+                    # Writing data to a file
+                    f.write("Observes : " + str(obses) + '\n' + "Action : " + str(actions) + "Rewards : " + str(rews) + '\n')
+            if obses[0][-7] > 30 and obses[0][-6] < -30 and obses[0][-4] < 20 and obses[0][-4] > -30:
+                with open("record_action2.txt", "a") as f:
+                    # Writing data to a file
+                    f.write("Observes : " + str(obses) + '\n' + "Action : " + str(actions) + "Rewards : " + str(rews) + '\n')'''
             obses = new_obses
 
             self.agent.learn()
@@ -131,16 +135,11 @@ class Train:
 
             if bool(self.max_total_steps) and (step * self.agent.n_env) >= self.max_total_steps:
                 exit()
-                print("hey amani")
-                self.agent.save_model()
-
-
 
     def run(self):
         self.init_replay_memory_buffer()
 
         self.train_loop()
-        self.writer.close()
 
 
 if __name__ == "__main__":
@@ -176,4 +175,3 @@ if __name__ == "__main__":
                         )
 
     Train(parser.parse_args()).run()
-    

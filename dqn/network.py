@@ -1,4 +1,5 @@
 import os
+import numpy as np
 
 import torch as T
 import torch.nn as nn
@@ -41,7 +42,7 @@ class Network(nn.Module):
         with open(load_path, 'rb') as f:
             params_dict = msgpack.loads(f.read())
 
-        parameters = {k: T.as_tensor(v, device=self.device) for k, v in params_dict['parameters'].items()}
+        parameters = {k: T.as_tensor(np.array(v), device=self.device) for k, v in params_dict['parameters'].items()}
         self.load_state_dict(parameters)
 
         return params_dict['step'], params_dict['episode_count'], params_dict['rew_mean'], params_dict['len_mean']

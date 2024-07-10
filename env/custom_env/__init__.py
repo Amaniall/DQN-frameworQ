@@ -1,5 +1,7 @@
 # """CHANGE CUSTOM ENV PACKAGE NAMESPACE HERE""" #######################################################################
-from .utils import RES
+from . import baselines as Baselines
+from .platoon_simplified_env import PlatoonEnvSimp
+from .utils import SUMO_PARAMS
 
-__all__ = ['RES']
+__all__ = ["Baselines", "PlatoonEnvSimp", "SUMO_PARAMS"]
 ########################################################################################################################

@@ -12,7 +12,7 @@ class RepeatActionWrapper(gym.Wrapper):
         total_reward = 0.0
         done = False
         for i in range(self._repeat):
-            obs, reward, done, info = self.env.step(ac)
+            obs, reward, done, info = self.env.step(action)
             total_reward += reward
             if done:
                 break
