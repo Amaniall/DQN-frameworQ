@@ -1,4 +1,4 @@
-SUMO_HOME = "C:/Program Files (x86)/Eclipse/Sumo/"
+SUMO_HOME = "/usr/bin/sumo/"
 import sys
 sys.path.append(SUMO_HOME + 'tools')
 

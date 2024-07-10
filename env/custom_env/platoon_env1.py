@@ -16,7 +16,7 @@ import xml.etree.ElementTree as ET
 from plexe import Plexe, ACC, CACC, DRIVER, FAKED_CACC, RPM, GEAR, ACCELERATION, SPEED, RADAR_DISTANCE, POS_X, POS_Y
 from itertools import permutations
 
-SUMO_HOME = "C:/Program Files (x86)/Eclipse/Sumo/"
+SUMO_HOME = "/usr/bin/sumo/"
 
 sys.path.append(SUMO_HOME + 'tools')
 
